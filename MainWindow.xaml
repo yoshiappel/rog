@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:rog"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+        Title="ROG" Height="250" Width="400">
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
+        <TextBlock x:Name="NowPlaying" Text="No track loaded" Margin="0,0,0,10" TextAlignment="Center"/>
+        <Button Content="Open File" Click="OpenFile_Click" Margin="0,5"/>
+        <Button Content="Play" Click="Play_Click" Margin="0,5"/>
+        <Button Content="Pause" Click="Pause_Click" Margin="0,5"/>
+        <Button Content="Stop" Click="Stop_Click" Margin="0,5"/>
+    </StackPanel>
 </Window>

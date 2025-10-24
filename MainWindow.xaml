@@ -6,11 +6,17 @@
         xmlns:local="clr-namespace:rog"
         mc:Ignorable="d"
         Title="ROG" Height="250" Width="400">
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
-        <TextBlock x:Name="NowPlaying" Text="No track loaded" Margin="0,0,0,10" TextAlignment="Center"/>
-        <Button Content="Open File" Click="OpenFile_Click" Margin="0,5"/>
-        <Button Content="Play" Click="Play_Click" Margin="0,5"/>
-        <Button Content="Pause" Click="Pause_Click" Margin="0,5"/>
-        <Button Content="Stop" Click="Stop_Click" Margin="0,5"/>
+    <StackPanel Margin="20" HorizontalAlignment="Center">
+        <TextBlock x:Name="NowPlaying" Text="No track loaded" Margin="0,0,0,10" FontWeight="Bold"/>
+
+        <Slider x:Name="ProgressSlider" Minimum="0" Maximum="100" Width="350" 
+                ValueChanged="ProgressSlider_ValueChanged" Margin="0,0,0,10"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Open File" Click="OpenFile_Click" Width="80"/>
+            <Button Content="Play" Click="Play_Click" Width="60"/>
+            <Button Content="Pause" Click="Pause_Click" Width="60"/>
+            <Button Content="Stop" Click="Stop_Click" Width="60"/>
+        </StackPanel>
     </StackPanel>
 </Window>

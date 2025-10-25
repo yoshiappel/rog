@@ -13,10 +13,9 @@
                 ValueChanged="ProgressSlider_ValueChanged" Margin="0,0,0,10"/>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Open File" Click="OpenFile_Click" Width="80"/>
-            <Button Content="Play" Click="Play_Click" Width="60"/>
-            <Button Content="Pause" Click="Pause_Click" Width="60"/>
-            <Button Content="Stop" Click="Stop_Click" Width="60"/>
+            <Button Content="📁" Click="OpenFile_Click" Width="30" Height="30"/>
+            <Button x:Name="PlayPauseButton" Content="▶" Width="30" Height="30" Margin="10" Click="PlayPauseButton_Click"/>
+            <Button Content="◼" Width="30" Height="30" Click="Stop_Click"/>
         </StackPanel>
     </StackPanel>
 </Window>

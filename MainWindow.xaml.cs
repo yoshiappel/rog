@@ -10,6 +10,7 @@ namespace rog
     public partial class MainWindow : Window
     {
         private MediaPlayer player = new MediaPlayer();
+        private bool isPlaying = false;
         private string currentFile = "";
         private bool isPaused = false;
         private bool hasPlayed = false;
@@ -28,6 +29,7 @@ namespace rog
             SetupTimer();
             LoadLastSession();
             player.MediaOpened += Player_MediaOpened;
+            player.MediaEnded += Player_MediaEnded;
         }
 
         private void SetupTimer()
@@ -70,6 +72,17 @@ namespace rog
             }
         }
 
+        private void Player_MediaEnded(object? sender, EventArgs e)
+        {
+            timer.Stop();
+            isPlaying = false;
+            isPaused = false;
+            PlayPauseButton.Content = "▶";
+            ProgressSlider.Value = 0;
+            NowPlaying.Text = "Playback finished.";
+            SaveSession(0);
+        }
+
         private void OpenFile_Click(object sender, RoutedEventArgs e)
         {
             var dlg = new OpenFileDialog
@@ -87,7 +100,8 @@ namespace rog
             }
         }
 
-        private void Play_Click(object sender, RoutedEventArgs e)
+        // show play or pause
+        private void PlayPauseButton_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(currentFile))
             {
@@ -100,21 +114,24 @@ namespace rog
                 player.Open(new Uri(currentFile));
             }
 
-            player.Play();
-            hasPlayed = true;
-            timer.Start();
-            isPaused = false;
-            NowPlaying.Text = $"Playing: {Path.GetFileName(currentFile)}";
-        }
-
-        private void Pause_Click(object sender, RoutedEventArgs e)
-        {
-            if (player.CanPause)
+            if (!isPlaying)
+            {
+                player.Play();
+                timer.Start();
+                isPlaying = true;
+                hasPlayed = true;
+                isPaused = false;
+                PlayPauseButton.Content = "❚❚";
+                NowPlaying.Text = $"Playing: {System.IO.Path.GetFileName(currentFile)}";
+            }
+            else
             {
                 player.Pause();
+                isPlaying = false;
                 isPaused = true;
                 SaveSession();
-                NowPlaying.Text = $"Paused: {Path.GetFileName(currentFile)}";
+                PlayPauseButton.Content = "▶";
+                NowPlaying.Text = $"Paused: {System.IO.Path.GetFileName(currentFile)}";
             }
         }
 
@@ -126,8 +143,10 @@ namespace rog
                 player.Stop();
                 timer.Stop();
                 isPaused = false;
+                isPlaying = false;
                 ProgressSlider.Value = 0;
                 NowPlaying.Text = "Stopped.";
+                PlayPauseButton.Content = "▶";
             }
         }
 

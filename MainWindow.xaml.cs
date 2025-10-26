@@ -80,7 +80,7 @@ namespace rog
             PlayPauseButton.Content = "▶";
             ProgressSlider.Value = 0;
             NowPlaying.Text = "Playback finished.";
-            SaveSession(0);
+            SaveSession(0, true);
         }
 
         private void OpenFile_Click(object sender, RoutedEventArgs e)
@@ -92,11 +92,36 @@ namespace rog
 
             if (dlg.ShowDialog() == true)
             {
-                currentFile = dlg.FileName;
-                NowPlaying.Text = $"Loaded: {Path.GetFileName(currentFile)}";
-                isPaused = false;
-                hasPlayed = false;
-                SaveSession(0);
+                try
+                {
+                    // reset everything UI and player
+                    timer.Stop();
+                    player.Stop();
+                    player.Close(); 
+                    currentFile = dlg.FileName;
+                    ProgressSlider.Value = 0;
+                    isPlaying = false;
+                    isPaused = false;
+                    hasPlayed = false;
+                    PlayPauseButton.Content = "▶";
+                    NowPlaying.Text = $"Loaded: {System.IO.Path.GetFileName(currentFile)}";
+
+                    // reset resume position
+                    SaveSession(0, true);
+
+                    // for autoplaying the new song
+                    //player.Open(new Uri(currentFile));
+                    //player.Play();
+                    //isPlaying = true;
+                    //hasPlayed = true;
+                    //timer.Start();
+                    //PlayPauseButton.Content = "⏸ Pause";
+                    //NowPlaying.Text = $"Playing: {System.IO.Path.GetFileName(currentFile)}";
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error loading song: {ex.Message}");
+                }
             }
         }
 
@@ -147,6 +172,7 @@ namespace rog
                 ProgressSlider.Value = 0;
                 NowPlaying.Text = "Stopped.";
                 PlayPauseButton.Content = "▶";
+                player.Close();
             }
         }
 
@@ -156,17 +182,22 @@ namespace rog
                 return;
         }
 
-        private void SaveSession(double? overridePos = null)
+        private void SaveSession(double? overridePos = null, bool force = false)
         {
             try
             {
-                if (!string.IsNullOrEmpty(currentFile) && player.Source != null)
+                // We can always save if we have a file path — even if player.Source == null
+                if (!string.IsNullOrEmpty(currentFile))
                 {
-                    double position = overridePos ?? player.Position.TotalSeconds;
-                    if (player.NaturalDuration.HasTimeSpan && position > 0)
+                    double position = overridePos ?? 0;
+
+                    // If we're not forcing and player has a valid source, use its position
+                    if (!force && player.Source != null && player.NaturalDuration.HasTimeSpan)
                     {
-                        File.WriteAllText(ResumeFile, $"{currentFile}|{position}");
+                        position = player.Position.TotalSeconds;
                     }
+
+                    File.WriteAllText(ResumeFile, $"{currentFile}|{position}");
                 }
             }
             catch (Exception e)

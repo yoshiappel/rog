@@ -5,17 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:rog"
         mc:Ignorable="d"
-        Title="ROG" Height="250" Width="400">
-    <StackPanel Margin="20" HorizontalAlignment="Center">
-        <TextBlock x:Name="NowPlaying" Text="No track loaded" Margin="0,0,0,10" FontWeight="Bold"/>
+        Title="ROG" Height="250" Width="450">
+    <StackPanel Margin="0,20,0,20" HorizontalAlignment="Center" Width="430">
 
-        <Slider x:Name="ProgressSlider" Minimum="0" Maximum="100" Width="350" 
-                ValueChanged="ProgressSlider_ValueChanged" Margin="0,0,0,10"/>
-
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+        <Slider x:Name="ProgressSlider"
+        Width="430"
+        Height="20"
+        Minimum="0"
+        Maximum="100"
+        Value="0">
+            <Slider.Template>
+                <ControlTemplate TargetType="Slider">
+                    <Grid>
+                        <Track x:Name="PART_Track">
+                            <Track.DecreaseRepeatButton>
+                                <RepeatButton Command="Slider.DecreaseLarge"
+                                      Style="{x:Null}"
+                                      Background="#ddd"
+                                      Height="4"/>
+                            </Track.DecreaseRepeatButton>
+                            <Track.IncreaseRepeatButton>
+                                <RepeatButton Command="Slider.IncreaseLarge"
+                                      Style="{x:Null}"
+                                      Background="#999"
+                                      Height="4"/>
+                            </Track.IncreaseRepeatButton>
+                            <Track.Thumb>
+                                <Thumb Width="8" Height="8" Background="DarkGray" />
+                            </Track.Thumb>
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Slider.Template>
+        </Slider>
+        <StackPanel Orientation="Horizontal">
             <Button Content="📁" Click="OpenFile_Click" Width="30" Height="30"/>
             <Button x:Name="PlayPauseButton" Content="▶" Width="30" Height="30" Margin="10" Click="PlayPauseButton_Click"/>
             <Button Content="◼" Width="30" Height="30" Click="Stop_Click"/>
+            <TextBlock x:Name="NowPlaying" Text="No track loaded" Margin="10" FontWeight="Bold" Height="20" Width="240"/>
         </StackPanel>
     </StackPanel>
 </Window>

@@ -104,7 +104,7 @@ namespace rog
                     isPaused = false;
                     hasPlayed = false;
                     PlayPauseButton.Content = "▶";
-                    NowPlaying.Text = $"Loaded: {System.IO.Path.GetFileName(currentFile)}";
+                    NowPlaying.Text = $"{System.IO.Path.GetFileName(currentFile)}";
 
                     // reset resume position
                     SaveSession(0, true);
@@ -147,7 +147,7 @@ namespace rog
                 hasPlayed = true;
                 isPaused = false;
                 PlayPauseButton.Content = "❚❚";
-                NowPlaying.Text = $"Playing: {System.IO.Path.GetFileName(currentFile)}";
+                NowPlaying.Text = $"{System.IO.Path.GetFileName(currentFile)}";
             }
             else
             {
@@ -156,7 +156,7 @@ namespace rog
                 isPaused = true;
                 SaveSession();
                 PlayPauseButton.Content = "▶";
-                NowPlaying.Text = $"Paused: {System.IO.Path.GetFileName(currentFile)}";
+                NowPlaying.Text = $"{System.IO.Path.GetFileName(currentFile)}";
             }
         }
 
@@ -216,7 +216,7 @@ namespace rog
                     if (data.Length == 2 && File.Exists(data[0]))
                     {
                         currentFile = data[0];
-                        NowPlaying.Text = $"Resume: {Path.GetFileName(currentFile)}";
+                        NowPlaying.Text = $"{Path.GetFileName(currentFile)}";
                         isPaused = true;
                     }
                 }
